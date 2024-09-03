@@ -22,6 +22,7 @@ This repository contains a basic implementation of the classic Snake game writte
 First, clone the repository:
 
 git clone https://github.com/hkhristov8/snake_game.git
+
 cd snake_game
 
 Build and Run with Docker
