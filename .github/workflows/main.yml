@@ -1,0 +1,39 @@
+name: Python App with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11.4  # Change this to the Python version you're using
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install Flask==2.0.1  # Specify the desired Flask version
+
+    - name: Build Docker image
+      run: docker build -t nysgoth/snake_game -f Dockerfile .
+
+    - name: Execute DockerHub Login Script
+      run: |
+       echo "$(pwd)"
+       echo "$(ls -lah)"
+       chmod +x docker_login.sh
+       ./docker_login.sh
+
+    - name: Push Docker image to Docker Hub
+      if: github.event_name == 'push'  # Optional: Only push on push events
+      run: |
+        docker push nysgoth/snake_game:latest 
